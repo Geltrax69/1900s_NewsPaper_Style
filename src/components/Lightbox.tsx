@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import type { CarImage } from "../data/cars";
-import { Tilt } from "./Tilt";
 
 /** Keyboard-accessible lightbox with captions and prev/next controls. */
 export function Lightbox({
@@ -94,17 +93,16 @@ export function ImageGallery({ images }: { images: CarImage[] }) {
     <>
       <div className="grid grid-cols-2 gap-4" role="list" aria-label="Image gallery">
         {images.map((img, i) => (
-          <Tilt key={img.src} max={8}>
-            <button
-              role="listitem"
-              onClick={() => setOpenAt(i)}
-              className="photo-frame pressable cursor-pointer bg-transparent p-1.5 text-left w-full"
-              aria-label={`Enlarge image: ${img.alt}`}
-            >
-              <img src={img.src} alt={img.alt} loading="lazy" width={800} height={450} />
-              <p className="caption text-[0.8rem] mt-1.5 px-0.5">{img.caption}</p>
-            </button>
-          </Tilt>
+          <button
+            key={img.src}
+            role="listitem"
+            onClick={() => setOpenAt(i)}
+            className="photo-frame pressable cursor-pointer bg-transparent p-1.5 text-left w-full"
+            aria-label={`Enlarge image: ${img.alt}`}
+          >
+            <img src={img.src} alt={img.alt} loading="lazy" width={800} height={450} />
+            <p className="caption text-[0.8rem] mt-1.5 px-0.5">{img.caption}</p>
+          </button>
         ))}
       </div>
       {openAt !== null && (

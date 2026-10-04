@@ -10,7 +10,7 @@ import {
   SpecificationPanel,
 } from "../components/CarBits";
 import { ImageGallery } from "../components/Lightbox";
-import { Tilt } from "../components/Tilt";
+import { CarViewer360 } from "../components/CarViewer360";
 
 type Nav = (r: Route) => void;
 
@@ -58,19 +58,10 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
       <p className="byline mt-1">Illustrations · Not historical photographs</p>
 
       <figure className="my-8">
-        <Tilt max={8}>
-          <div className="photo-frame">
-            <img
-              src={car.images.front.src}
-              alt={car.images.front.alt}
-              width={1200}
-              height={675}
-              fetchPriority="high"
-            />
-          </div>
-        </Tilt>
+        <CarViewer360 car={car} />
         <figcaption className="caption text-[0.9rem] mt-2">
-          {car.images.front.caption}{" "}
+          Interactive 360° studio study — move across the image to walk around
+          the car, or switch to the interior view.{" "}
           <span className="not-italic font-label text-[0.65rem] uppercase tracking-[0.12em]">
             · {car.images.front.credit}
           </span>

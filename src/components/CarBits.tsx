@@ -1,7 +1,7 @@
 import type { Car, CarSpec } from "../data/cars";
 import type { Route } from "../hooks/useHashRoute";
 import { routeToHash } from "../hooks/useHashRoute";
-import { Tilt } from "./Tilt";
+import { CarViewer360 } from "./CarViewer360";
 
 export function SpecificationPanel({ specs }: { specs: CarSpec[] }) {
   return (
@@ -116,22 +116,11 @@ export function CarCard({
   return (
     <article className="flex flex-col h-full">
       <div className={imageFirst ? "order-first" : ""}>
-        <Tilt>
-          <button
-            onClick={() => navigate({ name: "article", id: car.id })}
-            className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"
-            aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
-          >
-            <img
-              src={car.images.front.src}
-              alt={car.images.front.alt}
-              loading="lazy"
-              width={800}
-              height={450}
-            />
-          </button>
-        </Tilt>
-        <p className="caption text-[0.8rem] mt-1.5">{car.images.front.caption}</p>
+        <CarViewer360 car={car} />
+        <p className="caption text-[0.8rem] mt-1.5">
+          Interactive 360° studio study — move across the image to rotate, or
+          choose the interior view.
+        </p>
       </div>
       <CarByline car={car} />
       <h3 className="headline text-[1.65rem] mt-1 mb-2">
@@ -169,22 +158,11 @@ export function CarFeature({
   return (
     <article className="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
       <div className={flip ? "md:order-2" : ""}>
-        <Tilt>
-          <button
-            onClick={() => navigate({ name: "article", id: car.id })}
-            className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"
-            aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
-          >
-            <img
-              src={car.images.front.src}
-              alt={car.images.front.alt}
-              loading="lazy"
-              width={800}
-              height={450}
-            />
-          </button>
-        </Tilt>
-        <p className="caption text-[0.85rem] mt-2">{car.images.front.caption}</p>
+        <CarViewer360 car={car} />
+        <p className="caption text-[0.85rem] mt-2">
+          Interactive 360° studio study — move across the image to rotate, or
+          choose the interior view.
+        </p>
       </div>
       <div className={flip ? "md:order-1" : ""}>
         <CarByline car={car} />

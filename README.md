@@ -43,6 +43,11 @@ npm run build    # production build → dist/
 - The 32 car illustrations (`public/images/cars/<slug>/{front,side,rear,interior}.jpg`)
   were generated for this publication as **detailed illustrations, not
   historical photographs** — credited as such throughout the site.
+- Each car also has a 16-frame 360° turntable
+  (`public/images/cars/<slug>/spin/00.jpg` … `15.jpg`, clean studio
+  backdrop, no scenery), scrubbed by pointer position in the
+  `CarViewer360` component — hover or drag to walk around the car, with an
+  interior-view toggle.
 
 ## Type
 

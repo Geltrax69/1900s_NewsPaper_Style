@@ -25,6 +25,7 @@ export interface CarSource {
 
 export interface Car {
   id: string;
+  imageDir: string;
   decade: "1950s" | "1970s";
   year: number;
   make: string;
@@ -52,6 +53,7 @@ const ILLUSTRATION_CREDIT = "Illustration created for The Motoring Gazette";
 export const cars: Car[] = [
   {
     id: "1957-chevrolet-bel-air",
+    imageDir: "bel-air-1957",
     decade: "1950s",
     year: 1957,
     make: "Chevrolet",
@@ -111,6 +113,7 @@ export const cars: Car[] = [
   },
   {
     id: "1959-cadillac-eldorado",
+    imageDir: "eldorado-1959",
     decade: "1950s",
     year: 1959,
     make: "Cadillac",
@@ -170,6 +173,7 @@ export const cars: Car[] = [
   },
   {
     id: "1955-mercedes-benz-300-sl",
+    imageDir: "300sl-1955",
     decade: "1950s",
     year: 1955,
     make: "Mercedes-Benz",
@@ -229,6 +233,7 @@ export const cars: Car[] = [
   },
   {
     id: "1959-jaguar-xk150",
+    imageDir: "xk150-1959",
     decade: "1950s",
     year: 1959,
     make: "Jaguar",
@@ -291,6 +296,7 @@ export const cars: Car[] = [
 export const cars1970s: Car[] = [
   {
     id: "1970-dodge-challenger-rt",
+    imageDir: "challenger-1970",
     decade: "1970s",
     year: 1970,
     make: "Dodge",
@@ -350,6 +356,7 @@ export const cars1970s: Car[] = [
   },
   {
     id: "1973-porsche-911-carrera-rs-27",
+    imageDir: "carrera-rs-1973",
     decade: "1970s",
     year: 1973,
     make: "Porsche",
@@ -409,6 +416,7 @@ export const cars1970s: Car[] = [
   },
   {
     id: "1974-lamborghini-countach-lp400",
+    imageDir: "countach-1974",
     decade: "1970s",
     year: 1974,
     make: "Lamborghini",
@@ -468,6 +476,7 @@ export const cars1970s: Car[] = [
   },
   {
     id: "1976-volkswagen-golf-gti",
+    imageDir: "golf-gti-1976",
     decade: "1970s",
     year: 1976,
     make: "Volkswagen",

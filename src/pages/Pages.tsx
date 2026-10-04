@@ -6,7 +6,7 @@ import { routeToHash } from "../hooks/useHashRoute";
 import { ArchiveSidebar } from "../components/ArchiveSidebar";
 import { CarCard, CarFeature, ReadStoryLink } from "../components/CarBits";
 import { ComparisonTable } from "../components/ComparisonTable";
-import { Tilt } from "../components/Tilt";
+import { CarViewer360 } from "../components/CarViewer360";
 import { EmptyState, FilterBar, EMPTY_FILTERS, type FilterState } from "../components/FilterBar";
 
 type Nav = (r: Route) => void;
@@ -118,26 +118,20 @@ function LeadStory({ navigate }: { navigate: Nav }) {
   return (
     <section aria-labelledby="lead-h" className="grid lg:grid-cols-5 gap-8 items-start">
       <div className="lg:col-span-3">
-        <Tilt max={8}>
-          <button
-            onClick={() => navigate({ name: "article", id: hero.id })}
-            className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"
-            aria-label={`Read the full story: ${hero.year} ${hero.make} ${hero.model}`}
-          >
-            <img
-              src={hero.images.front.src}
-              alt={hero.images.front.alt}
-              width={1200}
-              height={675}
-              fetchPriority="high"
-            />
-          </button>
-        </Tilt>
+        <CarViewer360 car={hero} />
         <p className="caption text-[0.85rem] mt-2">
-          {hero.images.front.caption}{" "}
-          <span className="not-italic font-label text-[0.65rem] uppercase tracking-[0.12em]">
-            · Illustration
-          </span>
+          Interactive 360° studio study of the {hero.year} {hero.make} {hero.model} —{" "}
+          <a
+            href={routeToHash({ name: "article", id: hero.id })}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate({ name: "article", id: hero.id });
+            }}
+            className="text-burgundy underline decoration-burgundy/40 underline-offset-2"
+          >
+            read the full story
+          </a>
+          .
         </p>
       </div>
       <div className="lg:col-span-2">
