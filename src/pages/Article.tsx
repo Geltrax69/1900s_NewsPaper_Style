@@ -58,7 +58,7 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
       <p className="byline mt-1">Illustrations · Not historical photographs</p>
 
       <figure className="my-8">
-        <Tilt max={5}>
+        <Tilt max={8}>
           <div className="photo-frame">
             <img
               src={car.images.front.src}

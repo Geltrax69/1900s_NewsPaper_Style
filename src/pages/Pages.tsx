@@ -118,7 +118,7 @@ function LeadStory({ navigate }: { navigate: Nav }) {
   return (
     <section aria-labelledby="lead-h" className="grid lg:grid-cols-5 gap-8 items-start">
       <div className="lg:col-span-3">
-        <Tilt max={5}>
+        <Tilt max={8}>
           <button
             onClick={() => navigate({ name: "article", id: hero.id })}
             className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"

@@ -88,13 +88,34 @@ p {
   transform: scale(0.97);
 }
 
-/* 3D tilt scene for car imagery (JS drives the inner transform) */
+/* 3D tilt scene for car imagery (JS drives the inner transform + shine) */
 .tilt-scene {
-  perspective: 900px;
+  perspective: 1000px;
 }
 .tilt-inner {
   transform-style: preserve-3d;
   will-change: transform;
+  transition: filter 220ms var(--ease-out);
+}
+/* The wrapper only exists when tilt is active (hover-capable, no reduced
+   motion), so this shadow never appears on touch / reduced-motion. */
+.tilt-scene:hover .tilt-inner {
+  filter: drop-shadow(0 18px 26px rgba(43, 35, 23, 0.3));
+}
+.tilt-shine-wrap {
+  position: relative;
+}
+.tilt-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 253, 245, 0.5) 50%,
+    transparent 62%
+  );
+  opacity: 0;
 }
 @media (prefers-reduced-motion: reduce) {
   .tilt-inner {

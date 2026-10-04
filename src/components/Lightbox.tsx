@@ -94,7 +94,7 @@ export function ImageGallery({ images }: { images: CarImage[] }) {
     <>
       <div className="grid grid-cols-2 gap-4" role="list" aria-label="Image gallery">
         {images.map((img, i) => (
-          <Tilt key={img.src} max={4} scale={1.015}>
+          <Tilt key={img.src} max={8}>
             <button
               role="listitem"
               onClick={() => setOpenAt(i)}
