@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "ZT Bros Oskon 90s", Georgia, "Times New Roman", serif;
+  --font-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-label: "Space Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-paper: #f2e9d2;
+  --color-paper-deep: #e8dabd;
+  --color-ink: #211a11;
+  --color-ink-soft: #4c4234;
+  --color-faded: #7d6c53;
+  --color-burgundy: #7c3030;
+  --color-rule: #2b2317;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-paper);
+  /* Subtle grain + gently uneven tone, kept quiet so text stays crisp */
+  background-image:
+    radial-gradient(ellipse 120% 90% at 20% 0%, rgba(255, 252, 240, 0.5), transparent 60%),
+    radial-gradient(ellipse 100% 80% at 85% 100%, rgba(120, 90, 40, 0.08), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: #7c3030;
+  color: #f7f0dd;
+}
+
+/* ---------- Newspaper rules ---------- */
+.rule-double {
+  border-top: 3px double var(--color-rule);
+}
+.rule-single {
+  border-top: 1px solid var(--color-rule);
+}
+.rule-thick {
+  border-top: 2px solid var(--color-rule);
+}
+
+/* ---------- Editorial typography ---------- */
+.drop-cap::first-letter {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 3.4em;
+  line-height: 0.85;
+  float: left;
+  padding: 0.06em 0.12em 0 0;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+}
+
+.kicker {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+}
+
+.caption {
+  font-family: var(--font-text);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+.byline {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  color: var(--color-faded);
+}
+
+/* Ornamental divider: rule — diamond — rule */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.ornament::before,
+.ornament::after {
+  content: "";
+  height: 1px;
+  background: var(--color-rule);
+  flex: 1;
+}
+.ornament > span {
+  width: 7px;
+  height: 7px;
+  background: var(--color-rule);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+/* Advertisement-style box */
+.ad-box {
+  border: 2px solid var(--color-rule);
+  outline: 1px solid var(--color-rule);
+  outline-offset: 3px;
+}
+
+/* Image treatment: gentle warmth, restrained, print-like */
+.photo-frame {
+  border: 1px solid var(--color-rule);
+  padding: 6px;
+  background: #faf5e6;
+}
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: sepia(0.14) saturate(0.94) contrast(1.01);
+}
+
+/* ---------- Accessibility ---------- */
+:focus-visible {
+  outline: 2px solid var(--color-burgundy);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Thin scrollbar to suit the paper aesthetic */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-faded);
+  border: 2px solid var(--color-paper-deep);
+}
