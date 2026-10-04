@@ -1,6 +1,7 @@
 import type { Car, CarSpec } from "../data/cars";
 import type { Route } from "../hooks/useHashRoute";
 import { routeToHash } from "../hooks/useHashRoute";
+import { Tilt } from "./Tilt";
 
 export function SpecificationPanel({ specs }: { specs: CarSpec[] }) {
   return (
@@ -115,19 +116,21 @@ export function CarCard({
   return (
     <article className="flex flex-col h-full">
       <div className={imageFirst ? "order-first" : ""}>
-        <button
-          onClick={() => navigate({ name: "article", id: car.id })}
-          className="photo-frame block w-full cursor-pointer bg-transparent p-1.5 text-left"
-          aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
-        >
-          <img
-            src={car.images.front.src}
-            alt={car.images.front.alt}
-            loading="lazy"
-            width={800}
-            height={450}
-          />
-        </button>
+        <Tilt>
+          <button
+            onClick={() => navigate({ name: "article", id: car.id })}
+            className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"
+            aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
+          >
+            <img
+              src={car.images.front.src}
+              alt={car.images.front.alt}
+              loading="lazy"
+              width={800}
+              height={450}
+            />
+          </button>
+        </Tilt>
         <p className="caption text-[0.8rem] mt-1.5">{car.images.front.caption}</p>
       </div>
       <CarByline car={car} />
@@ -138,7 +141,7 @@ export function CarCard({
             e.preventDefault();
             navigate({ name: "article", id: car.id });
           }}
-          className="text-ink no-underline hover:text-burgundy"
+          className="text-ink no-underline hover:text-burgundy transition-colors duration-150"
         >
           {car.headline}
         </a>
@@ -166,19 +169,21 @@ export function CarFeature({
   return (
     <article className="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
       <div className={flip ? "md:order-2" : ""}>
-        <button
-          onClick={() => navigate({ name: "article", id: car.id })}
-          className="photo-frame block w-full cursor-pointer bg-transparent p-1.5 text-left"
-          aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
-        >
-          <img
-            src={car.images.front.src}
-            alt={car.images.front.alt}
-            loading="lazy"
-            width={800}
-            height={450}
-          />
-        </button>
+        <Tilt>
+          <button
+            onClick={() => navigate({ name: "article", id: car.id })}
+            className="photo-frame pressable block w-full cursor-pointer bg-transparent p-1.5 text-left"
+            aria-label={`Read the full story: ${car.year} ${car.make} ${car.model}`}
+          >
+            <img
+              src={car.images.front.src}
+              alt={car.images.front.alt}
+              loading="lazy"
+              width={800}
+              height={450}
+            />
+          </button>
+        </Tilt>
         <p className="caption text-[0.85rem] mt-2">{car.images.front.caption}</p>
       </div>
       <div className={flip ? "md:order-1" : ""}>
@@ -190,7 +195,7 @@ export function CarFeature({
               e.preventDefault();
               navigate({ name: "article", id: car.id });
             }}
-            className="text-ink no-underline hover:text-burgundy"
+            className="text-ink no-underline hover:text-burgundy transition-colors duration-150"
           >
             {car.headline}
           </a>

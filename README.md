@@ -47,8 +47,13 @@ npm run build    # production build → dist/
 ## Type
 
 Self-hosted in `public/fonts` (see `fonts.css`): **ZT Bros Oskon 90s**
-(display serif), **Source Serif 4** (article serif), **Space Mono**
-(specifications and labels).
+(display serif), **JaneAusten** (classic script accents — tagline, pull
+quotes, the motoring club advertisement; personal use only), **Source Serif
+4** (article serif), **Space Mono** (specifications and labels).
+
+Car imagery tilts subtly in 3D toward the pointer on hover-capable devices
+(`src/components/Tilt.tsx`) — disabled entirely under
+`prefers-reduced-motion` and on touch devices.
 
 ## Tech
 

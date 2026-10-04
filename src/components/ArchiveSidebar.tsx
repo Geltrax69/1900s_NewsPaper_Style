@@ -75,7 +75,7 @@ export function ArchiveSidebar() {
 
       <section aria-label="Advertisement" className="ad-box bg-[#faf5e6] p-5 text-center">
         <p className="kicker text-faded mb-2">Advertisement</p>
-        <h3 className="headline text-[1.7rem] leading-tight mb-3">
+        <h3 className="script text-[2.1rem] leading-tight mb-3 text-ink">
           {clubAdvertisement.title}
         </h3>
         {clubAdvertisement.lines.map((l) => (

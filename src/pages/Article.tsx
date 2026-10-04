@@ -10,6 +10,7 @@ import {
   SpecificationPanel,
 } from "../components/CarBits";
 import { ImageGallery } from "../components/Lightbox";
+import { Tilt } from "../components/Tilt";
 
 type Nav = (r: Route) => void;
 
@@ -26,7 +27,7 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
         </p>
         <button
           onClick={() => navigate({ name: "front" })}
-          className="font-label uppercase tracking-[0.14em] text-[0.72rem] text-paper bg-burgundy border border-burgundy px-4 py-2 cursor-pointer hover:bg-transparent hover:text-burgundy"
+          className="pressable font-label uppercase tracking-[0.14em] text-[0.72rem] text-paper bg-burgundy border border-burgundy px-4 py-2 cursor-pointer hover:bg-transparent hover:text-burgundy"
         >
           Return to the front page
         </button>
@@ -57,15 +58,17 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
       <p className="byline mt-1">Illustrations · Not historical photographs</p>
 
       <figure className="my-8">
-        <div className="photo-frame">
-          <img
-            src={car.images.front.src}
-            alt={car.images.front.alt}
-            width={1200}
-            height={675}
-            fetchPriority="high"
-          />
-        </div>
+        <Tilt max={5}>
+          <div className="photo-frame">
+            <img
+              src={car.images.front.src}
+              alt={car.images.front.alt}
+              width={1200}
+              height={675}
+              fetchPriority="high"
+            />
+          </div>
+        </Tilt>
         <figcaption className="caption text-[0.9rem] mt-2">
           {car.images.front.caption}{" "}
           <span className="not-italic font-label text-[0.65rem] uppercase tracking-[0.12em]">
@@ -77,9 +80,16 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
       <div className="grid lg:grid-cols-[1fr_320px] gap-10 items-start">
         <div className="font-text text-[1.02rem] leading-[1.8] text-ink-soft">
           {car.body.map((p, i) => (
-            <p key={i} className={i === 0 ? "drop-cap mt-0 mb-5" : "mt-0 mb-5"}>
-              {p}
-            </p>
+            <div key={i}>
+              <p className={i === 0 ? "drop-cap mt-0 mb-5" : "mt-0 mb-5"}>{p}</p>
+              {i === 0 && (
+                <blockquote className="my-7 border-y border-rule py-5 px-2 text-center">
+                  <p className="script text-[1.7rem] leading-snug text-ink m-0">
+                    “{car.intro}”
+                  </p>
+                </blockquote>
+              )}
+            </div>
           ))}
           <CollectorsNote note={car.collectorsNote} />
 
@@ -111,7 +121,7 @@ export function ArticlePage({ id, navigate }: { id: string; navigate: Nav }) {
                     <span className="byline">
                       {r.year} · {r.country}
                     </span>
-                    <span className="headline text-[1.15rem] block text-ink group-hover:text-burgundy">
+                    <span className="headline text-[1.15rem] block text-ink group-hover:text-burgundy transition-colors duration-150">
                       {r.headline}
                     </span>
                   </a>

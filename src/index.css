@@ -2,8 +2,12 @@
 
 @theme {
   --font-display: "ZT Bros Oskon 90s", Georgia, "Times New Roman", serif;
+  --font-script: "JaneAusten", "Snell Roundhand", cursive;
   --font-text: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-label: "Space Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 
   --color-paper: #f2e9d2;
   --color-paper-deep: #e8dabd;
@@ -62,6 +66,40 @@ body {
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: 0.005em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Classic script accent */
+.script {
+  font-family: var(--font-script);
+  font-weight: 400;
+}
+
+/* Press feedback: tactile 0.97 scale on pressable controls */
+.pressable {
+  transition: transform 160ms var(--ease-out), background-color 150ms ease-out,
+    color 150ms ease-out, border-color 150ms ease-out;
+}
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* 3D tilt scene for car imagery (JS drives the inner transform) */
+.tilt-scene {
+  perspective: 900px;
+}
+.tilt-inner {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tilt-inner {
+    will-change: auto;
+  }
 }
 
 .kicker {

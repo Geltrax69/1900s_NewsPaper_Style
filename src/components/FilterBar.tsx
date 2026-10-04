@@ -109,13 +109,13 @@ export function FilterBar({
           </select>
         </div>
         <div className="flex items-end gap-3">
-          <p className="font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink-soft m-0 whitespace-nowrap" aria-live="polite">
+          <p className="font-label text-[0.72rem] uppercase tracking-[0.14em] text-ink-soft m-0 whitespace-nowrap tabular-nums" aria-live="polite">
             {resultCount} {resultCount === 1 ? "result" : "results"}
           </p>
           <button
             onClick={() => onChange({ ...EMPTY_FILTERS, decade: showDecade ? "all" : filters.decade })}
             disabled={isDefault}
-            className="font-label uppercase tracking-[0.14em] text-[0.7rem] text-burgundy bg-transparent border border-burgundy px-3 py-1.5 cursor-pointer hover:bg-burgundy hover:text-paper disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
+            className="pressable font-label uppercase tracking-[0.14em] text-[0.7rem] text-burgundy bg-transparent border border-burgundy px-3 py-1.5 cursor-pointer hover:bg-burgundy hover:text-paper disabled:opacity-40 disabled:cursor-not-allowed whitespace-nowrap"
           >
             Reset
           </button>
@@ -135,7 +135,7 @@ export function EmptyState({ onReset }: { onReset: () => void }) {
       </p>
       <button
         onClick={onReset}
-        className="font-label uppercase tracking-[0.14em] text-[0.72rem] text-paper bg-burgundy border border-burgundy px-4 py-2 cursor-pointer hover:bg-transparent hover:text-burgundy"
+        className="pressable font-label uppercase tracking-[0.14em] text-[0.72rem] text-paper bg-burgundy border border-burgundy px-4 py-2 cursor-pointer hover:bg-transparent hover:text-burgundy"
       >
         Clear all filters
       </button>

@@ -14,8 +14,8 @@ export function Masthead({ navigate }: { navigate: (r: Route) => void }) {
           The Motoring Gazette
         </h1>
       </button>
-      <p className="font-text italic text-ink-soft text-lg mt-2">
-        “Remarkable Machines. Enduring Stories.”
+      <p className="script text-[1.75rem] text-ink mt-3 leading-tight">
+        Remarkable Machines. Enduring Stories.
       </p>
     </header>
   );
@@ -69,7 +69,7 @@ export function Navigation({
               className={`font-label uppercase tracking-[0.18em] text-[0.72rem] no-underline transition-colors ${
                 isActive(item.route)
                   ? "text-burgundy font-bold"
-                  : "text-ink hover:text-burgundy"
+                  : "text-ink hover:text-burgundy transition-colors duration-150"
               }`}
             >
               {item.label}

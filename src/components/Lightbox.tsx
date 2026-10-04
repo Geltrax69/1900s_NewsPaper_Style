@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { CarImage } from "../data/cars";
+import { Tilt } from "./Tilt";
 
 /** Keyboard-accessible lightbox with captions and prev/next controls. */
 export function Lightbox({
@@ -57,7 +58,7 @@ export function Lightbox({
           <button
             ref={closeRef}
             onClick={onClose}
-            className="font-label uppercase tracking-[0.16em] text-[0.72rem] text-burgundy bg-transparent border border-burgundy px-3 py-1.5 cursor-pointer hover:bg-burgundy hover:text-paper"
+            className="pressable font-label uppercase tracking-[0.16em] text-[0.72rem] text-burgundy bg-transparent border border-burgundy px-3 py-1.5 cursor-pointer hover:bg-burgundy hover:text-paper"
             aria-label="Close image viewer"
           >
             Close ✕
@@ -67,7 +68,7 @@ export function Lightbox({
         <div className="flex items-center justify-between gap-4 px-1 py-3">
           <button
             onClick={() => setIndex((i) => (i - 1 + images.length) % images.length)}
-            className="font-label uppercase tracking-[0.14em] text-[0.72rem] text-ink bg-transparent border border-rule px-3 py-1.5 cursor-pointer hover:bg-ink hover:text-paper"
+            className="pressable font-label uppercase tracking-[0.14em] text-[0.72rem] text-ink bg-transparent border border-rule px-3 py-1.5 cursor-pointer hover:bg-ink hover:text-paper"
             aria-label="Previous image"
           >
             ← Prev
@@ -75,7 +76,7 @@ export function Lightbox({
           <p className="caption text-[0.9rem] m-0 text-center flex-1">{img.caption}</p>
           <button
             onClick={() => setIndex((i) => (i + 1) % images.length)}
-            className="font-label uppercase tracking-[0.14em] text-[0.72rem] text-ink bg-transparent border border-rule px-3 py-1.5 cursor-pointer hover:bg-ink hover:text-paper"
+            className="pressable font-label uppercase tracking-[0.14em] text-[0.72rem] text-ink bg-transparent border border-rule px-3 py-1.5 cursor-pointer hover:bg-ink hover:text-paper"
             aria-label="Next image"
           >
             Next →
@@ -93,16 +94,17 @@ export function ImageGallery({ images }: { images: CarImage[] }) {
     <>
       <div className="grid grid-cols-2 gap-4" role="list" aria-label="Image gallery">
         {images.map((img, i) => (
-          <button
-            key={img.src}
-            role="listitem"
-            onClick={() => setOpenAt(i)}
-            className="photo-frame cursor-pointer bg-transparent p-1.5 text-left"
-            aria-label={`Enlarge image: ${img.alt}`}
-          >
-            <img src={img.src} alt={img.alt} loading="lazy" width={800} height={450} />
-            <p className="caption text-[0.8rem] mt-1.5 px-0.5">{img.caption}</p>
-          </button>
+          <Tilt key={img.src} max={4} scale={1.015}>
+            <button
+              role="listitem"
+              onClick={() => setOpenAt(i)}
+              className="photo-frame pressable cursor-pointer bg-transparent p-1.5 text-left w-full"
+              aria-label={`Enlarge image: ${img.alt}`}
+            >
+              <img src={img.src} alt={img.alt} loading="lazy" width={800} height={450} />
+              <p className="caption text-[0.8rem] mt-1.5 px-0.5">{img.caption}</p>
+            </button>
+          </Tilt>
         ))}
       </div>
       {openAt !== null && (
