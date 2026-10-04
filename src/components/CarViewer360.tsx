@@ -1,22 +1,39 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Car } from "../data/cars";
 
-const FRAMES = 16;
+const FRAMES = 36;
+const EASE = 0.3; // how quickly the angle chases the pointer (per rAF tick)
+const FRICTION = 0.94; // momentum decay per tick after release
+const MIN_VEL = 0.02; // below this, momentum stops
+const MAX_VEL = 2.5; // clamp flick speed (frames per tick)
+
+const wrap = (n: number) => ((n % FRAMES) + FRAMES) % FRAMES;
 
 /**
  * Interactive 360° car viewer.
  *
- * Moving the pointer across the image scrubs through 16 clean-studio frames
- * (a full turntable); on touch, drag horizontally. A segmented control flips
- * to the detailed interior view. Motion is entirely user-driven — no
- * autoplay, no autonomous animation — so it stays calm under
- * prefers-reduced-motion too. Keyboard: focus the stage and use ← → arrows.
+ * A dense 36-frame turntable (10° steps) plus a smoothed, physics-flavoured
+ * drive: the rendered angle eases toward the pointer instead of snapping to
+ * it, and releasing mid-sweep keeps the car spinning with friction-decayed
+ * momentum — the same feel as flicking a 3D model. Motion is entirely
+ * user-driven (no autoplay); under prefers-reduced-motion the angle snaps
+ * directly with no easing and no momentum.
+ *
+ * Keyboard: focus the stage and use ← → arrows.
  */
 export function CarViewer360({ car }: { car: Car }) {
   const [frame, setFrame] = useState(0);
   const [mode, setMode] = useState<"exterior" | "interior">("exterior");
   const [interacted, setInteracted] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
+
+  // Continuous, unbounded angle (frames); the integer display frame is derived.
+  const angle = useRef(0);
+  const target = useRef(0);
+  const vel = useRef(0);
+  const interacting = useRef(false);
+  const raf = useRef<number>(0);
+  const reduced = useRef(false);
 
   const frames = useMemo(
     () =>
@@ -56,21 +73,107 @@ export function CarViewer360({ car }: { car: Car }) {
     preload();
   }, [frames]);
 
-  const scrubTo = useCallback((clientX: number) => {
-    const el = stageRef.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const px = Math.min(0.999, Math.max(0, (clientX - r.left) / r.width));
-    setFrame(Math.floor(px * FRAMES));
-    setInteracted(true);
+  const stopLoop = useCallback(() => {
+    if (raf.current) cancelAnimationFrame(raf.current);
+    raf.current = 0;
+  }, []);
+
+  const tick = useCallback(() => {
+    raf.current = 0;
+    const prev = angle.current;
+
+    if (interacting.current) {
+      // Ease toward the pointer target; track velocity for release momentum.
+      angle.current += (target.current - angle.current) * EASE;
+      const inst = angle.current - prev;
+      vel.current = vel.current * 0.75 + inst * 0.25;
+    } else {
+      // Coasting: momentum with friction.
+      angle.current += vel.current;
+      vel.current *= FRICTION;
+      if (Math.abs(vel.current) < MIN_VEL) vel.current = 0;
+    }
+
+    const shown = wrap(Math.round(angle.current));
+    setFrame((f) => (f === shown ? f : shown));
+
+    const settled =
+      !interacting.current &&
+      vel.current === 0 &&
+      Math.abs(target.current - angle.current) < 0.01;
+
+    if (settled) {
+      // Snap the unbounded angle back into range so numbers don't drift.
+      angle.current = wrap(angle.current);
+      target.current = angle.current;
+      return;
+    }
+    raf.current = requestAnimationFrame(tick);
+  }, []);
+
+  const ensureLoop = useCallback(() => {
+    if (!raf.current) raf.current = requestAnimationFrame(tick);
+  }, [tick]);
+
+  const scrubTo = useCallback(
+    (clientX: number) => {
+      const el = stageRef.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const px = Math.min(0.999, Math.max(0, (clientX - r.left) / r.width));
+      // Choose the target equivalent nearest to the current angle so
+      // scrubbing across the 0/35 seam doesn't snap the car backwards.
+      const raw = px * FRAMES;
+      target.current = raw + Math.round((angle.current - raw) / FRAMES) * FRAMES;
+      interacting.current = true;
+      setInteracted(true);
+      if (reduced.current) {
+        angle.current = target.current;
+        vel.current = 0;
+        setFrame(wrap(Math.round(angle.current)));
+      } else {
+        ensureLoop();
+      }
+    },
+    [ensureLoop]
+  );
+
+  const release = useCallback(() => {
+    interacting.current = false;
+    if (reduced.current) {
+      vel.current = 0;
+      return;
+    }
+    vel.current = Math.max(-MAX_VEL, Math.min(MAX_VEL, vel.current));
+    ensureLoop();
+  }, [ensureLoop]);
+
+  // Stop everything when unmounting or switching to the interior view.
+  useEffect(() => {
+    stopLoop();
+    return stopLoop;
+  }, [stopLoop]);
+
+  useEffect(() => {
+    reduced.current =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }, []);
 
   const step = useCallback(
     (d: number) => {
-      setFrame((f) => (f + d + FRAMES) % FRAMES);
+      interacting.current = false;
+      vel.current = 0;
+      target.current = angle.current + d;
+      if (reduced.current) {
+        angle.current = target.current;
+        setFrame(wrap(Math.round(angle.current)));
+      } else {
+        ensureLoop();
+      }
       setInteracted(true);
     },
-    []
+    [ensureLoop]
   );
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -109,6 +212,12 @@ export function CarViewer360({ car }: { car: Car }) {
         }}
         onPointerDown={(e) => {
           if (mode === "exterior" && e.pointerType !== "mouse") scrubTo(e.clientX);
+        }}
+        onPointerUp={release}
+        onPointerCancel={release}
+        onPointerLeave={(e) => {
+          // Mouse leaving the stage releases with momentum; touch drags end on pointerup.
+          if (mode === "exterior" && e.pointerType === "mouse") release();
         }}
         className="relative overflow-hidden select-none"
         style={{
