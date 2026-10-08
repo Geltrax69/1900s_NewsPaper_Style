@@ -14,6 +14,14 @@
 ![Tailwind](https://img.shields.io/badge/Tailwind%20v4-38BDF8?logo=tailwindcss&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 
+## Screenshots
+
+<p align="center">
+  <img src="./screenshot-ui.png" alt="The Motoring Gazette — front page" width="100%" />
+  <br />
+  <em>Front page — antique-newspaper masthead, 1959 Cadillac Eldorado 360° feature.</em>
+</p>
+
 ## What it is
 
 The Motoring Gazette is a hash-routed single-page app that presents eight
